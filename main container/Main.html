@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdulazizbek's Portfolio</title>
+
+    <style>
+        :root {
+            --ink: #14121f;
+            --bg: #f3f3fa;
+            --yellow: #ffe066;
+            --lilac: #cdbdff;
+            --mint: #b5f0d0;
+            --pink: #ffb8cd;
+            --sky: #aed6ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", Verdana, sans-serif;
+            color: var(--ink);
+            background-color: var(--bg);
+            background-image: radial-gradient(#c9c9de 1.5px, transparent 1.5px);
+            background-size: 22px 22px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            align-items: center;
+            padding: 72px 0 56px;
+        }
+
+        .title {
+            margin: 0 0 16px;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 900;
+            font-size: clamp(40px, 9vw, 84px);
+            line-height: 1;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            margin: 0;
+            max-width: 30em;
+            font-size: 18px;
+        }
+
+        .id-card {
+            margin: 0;
+            padding: 20px 22px;
+            background: var(--yellow);
+            border: 3px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+            transform: rotate(-2deg);
+        }
+
+        .id-card div + div {
+            margin-top: 14px;
+        }
+
+        .id-card dt {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .id-card dd {
+            margin: 0;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-size: 22px;
+            line-height: 1.25;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-size: 26px;
+        }
+
+        .week-container {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 22px;
+        }
+
+        .card a {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 26px 22px;
+            color: var(--ink);
+            text-decoration: none;
+            border: 3px solid var(--ink);
+            box-shadow: 6px 6px 0 var(--ink);
+            transition: transform 0.12s, box-shadow 0.12s;
+        }
+
+        .card:nth-child(5n+1) a { background: var(--lilac); }
+        .card:nth-child(5n+2) a { background: var(--mint); }
+        .card:nth-child(5n+3) a { background: var(--pink); }
+        .card:nth-child(5n+4) a { background: var(--sky); }
+        .card:nth-child(5n+5) a { background: var(--yellow); }
+
+        .wk {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .n {
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .card a:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 var(--ink);
+        }
+
+        .card a:focus-visible {
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+        }
+
+        footer {
+            margin-top: 48px;
+            padding: 20px 0 32px;
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+        }
+
+        @media (max-width: 760px) {
+            header {
+                grid-template-columns: 1fr;
+                padding: 48px 0 40px;
+                gap: 32px;
+            }
+
+            .id-card {
+                max-width: 320px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card a {
+                transition: none;
+            }
+
+            .card a:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 class="title">Abdulazizbek</h1>
+                <p class="description">
+                    Hi, I'm a Computer Engineering student. This page collects my
+                    weekly Web Programming assignments, so pick a week to see what I built.
+                </p>
+            </div>
+            <dl class="id-card">
+                <div>
+                    <dt>Student ID</dt>
+                    <dd>202537225</dd>
+                </div>
+                <div>
+                    <dt>Major</dt>
+                    <dd>Computer Engineering</dd>
+                </div>
+            </dl>
+        </header>
+
+        <main>
+            <h2>Assignments</h2>
+            <ul class="week-container">
+                <li class="card"><a href="./Week2.html"><span class="wk">Week</span> <span class="n">2</span></a></li>
+                <li class="card"><a href="./Week-3.html"><span class="wk">Week</span> <span class="n">3</span></a></li>
+                <li class="card"><a href="./Week-4.html"><span class="wk">Week</span> <span class="n">4</span></a></li>
+                <li class="card"><a href="./Week5.html"><span class="wk">Week</span> <span class="n">5</span></a></li>
+                <li class="card"><a href="./Week6.html"><span class="wk">Week</span> <span class="n">6</span></a></li>
+                <li class="card"><a href="../week  7/index.html"><span class="wk">Week</span> <span class="n">7</span></a></li>
+                <li class="card"><a href="../week 8/index.html"><span class="wk">Week</span> <span class="n">8</span></a></li>
+                <li class="card"><a href="../week 9/index.html"><span class="wk">Week</span> <span class="n">9</span></a></li>
+            </ul>
+        </main>
+
+        <footer>Abdulazizbek &middot; ID 202537225 &middot; Computer Engineering</footer>
+    </div>
+</body>
+</html>

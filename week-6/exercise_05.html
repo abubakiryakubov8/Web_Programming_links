@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pokédex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0e1a2f;
+        --panel: #16284a;
+        --line: #2c4573;
+        --txt: #e8eefb;
+        --acc: #ffcb05;
+        --t: #7a8aa8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--navy);
+        color: var(--txt);
+        font:
+          16px/1.5 "Chakra Petch",
+          system-ui,
+          sans-serif;
+        display: grid;
+        place-items: start center;
+        padding: 28px 14px;
+      }
+      .dex {
+        width: min(560px, 100%);
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      header {
+        padding: 18px 20px;
+        border-bottom: 2px solid var(--line);
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: var(--acc);
+        letter-spacing: 0.02em;
+      }
+      header p {
+        margin: 2px 0 12px;
+        color: #aebbd6;
+        font-size: 0.9rem;
+      }
+      form {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      input {
+        flex: 1;
+        min-width: 140px;
+        font: inherit;
+        padding: 9px 12px;
+        border-radius: 8px;
+        border: 2px solid var(--line);
+        background: var(--navy);
+        color: var(--txt);
+      }
+      button {
+        font: inherit;
+        font-weight: 700;
+        padding: 9px 16px;
+        border-radius: 8px;
+        border: 0;
+        cursor: pointer;
+        background: var(--acc);
+        color: #1b1b1b;
+      }
+      button.rnd {
+        background: transparent;
+        color: var(--txt);
+        border: 2px solid var(--acc);
+      }
+      input:focus-visible,
+      button:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 2px;
+      }
+      #out {
+        padding: 20px;
+        min-height: 260px;
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-radius: 14px;
+        padding: 12px 16px;
+        background: var(--t);
+      }
+      .hero img {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.3));
+      }
+      .hero h2 {
+        margin: 0;
+        font-size: 1.7rem;
+        text-transform: capitalize;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+      .no {
+        color: #fff;
+        opacity: 0.85;
+        font-weight: 600;
+      }
+      .chip {
+        display: inline-block;
+        margin: 6px 6px 0 0;
+        padding: 2px 12px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 0.85rem;
+        text-transform: capitalize;
+      }
+      .facts {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin: 16px 0;
+        color: #aebbd6;
+        font-size: 0.9rem;
+      }
+      .facts b {
+        display: block;
+        color: var(--txt);
+        font-size: 1.05rem;
+        text-transform: capitalize;
+      }
+      .stat {
+        display: grid;
+        grid-template-columns: 110px 36px 1fr;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.85rem;
+        margin: 5px 0;
+      }
+      .bar {
+        height: 9px;
+        border-radius: 9px;
+        background: var(--navy);
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--t);
+        border-radius: 9px;
+      }
+      .err {
+        color: #ff9aa8;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="dex">
+      <header>
+        <h1>Pokédex</h1>
+        <p>Search the full database at pokeapi.co by name or number.</p>
+        <form id="f">
+          <input
+            id="q"
+            placeholder="e.g. pikachu or 25"
+            aria-label="Pokémon name or number"
+            autocomplete="off"
+          />
+          <button>Search</button
+          ><button type="button" class="rnd" id="rnd">Random</button>
+        </form>
+      </header>
+      <section id="out" aria-live="polite">
+        Type a name or number to look up a Pokémon.
+      </section>
+    </main>
+    <script>
+      const COL = {
+        normal: "#8a8a6a",
+        fire: "#e8622a",
+        water: "#4a7fe0",
+        electric: "#e0b414",
+        grass: "#4fa83d",
+        ice: "#5cc0c0",
+        fighting: "#b22d26",
+        poison: "#9a3f9a",
+        ground: "#c2a04a",
+        flying: "#7c8ee6",
+        psychic: "#e5457a",
+        bug: "#8fa512",
+        rock: "#9a8528",
+        ghost: "#5c4a8a",
+        dragon: "#5a2ff0",
+        dark: "#5a463a",
+        steel: "#8a8aa8",
+        fairy: "#d67a96",
+      };
+      const STAT = {
+        hp: "HP",
+        attack: "Attack",
+        defense: "Defense",
+        "special-attack": "Sp. Attack",
+        "special-defense": "Sp. Defense",
+        speed: "Speed",
+      };
+      const $ = (id) => document.getElementById(id);
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+
+      async function lookup(term) {
+        term = String(term).trim().toLowerCase();
+        if (!term) {
+          $("out").textContent = "Enter a name or number first.";
+          return;
+        }
+        $("out").textContent = "Searching…";
+        try {
+          const r = await fetch(
+            "https://pokeapi.co/api/v2/pokemon/" + encodeURIComponent(term),
+          );
+          if (r.status === 404) {
+            $("out").innerHTML =
+              `<span class="err">No Pokémon found for "${esc(term)}". Check the spelling or try a number.</span>`;
+            return;
+          }
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          show(await r.json());
+        } catch (e) {
+          $("out").innerHTML =
+            `<span class="err">Could not reach the Pokédex (${esc(e.message)}).</span>`;
+        }
+      }
+      function show(p) {
+        const col = COL[p.types[0].type.name] || "#7a8aa8";
+        const img =
+          p.sprites.other["official-artwork"].front_default ||
+          p.sprites.front_default ||
+          "";
+        $("out").innerHTML = `
+    <div class="hero" style="background:${col}">
+      <img src="${img}" alt="${esc(p.name)}">
+      <div><span class="no">#${String(p.id).padStart(4, "0")}</span><h2>${esc(p.name)}</h2>
+      ${p.types.map((t) => `<span class="chip">${t.type.name}</span>`).join("")}</div>
+    </div>
+    <div class="facts"><div>Height<b>${p.height / 10} m</b></div><div>Weight<b>${p.weight / 10} kg</b></div>
+      <div>Abilities<b>${p.abilities.map((a) => a.ability.name.replace("-", " ")).join(", ")}</b></div></div>
+    ${p.stats
+      .map(
+        (
+          s,
+        ) => `<div class="stat"><span>${STAT[s.stat.name] || s.stat.name}</span><b>${s.base_stat}</b>
+      <div class="bar"><i style="width:${Math.min(100, (s.base_stat / 180) * 100)}%;background:${col}"></i></div></div>`,
+      )
+      .join("")}`;
+      }
+      $("f").onsubmit = (e) => {
+        e.preventDefault();
+        lookup($("q").value);
+      };
+      $("rnd").onclick = () => {
+        const n = 1 + Math.floor(Math.random() * 1025);
+        $("q").value = n;
+        lookup(n);
+      };
+    </script>
+  </body>
+</html>

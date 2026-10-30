@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student search</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: #eef0e8;
+    color: #1f2a22;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 440px;
+    margin-top: 6vh;
+    background: #fbfcf8;
+    border: 1px solid #d5dacb;
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  h1 { margin: 0 0 18px; font-size: 26px; font-weight: 600; }
+
+  #search {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 16px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    color: #1f2a22;
+    background: transparent;
+    border: 1px solid #d5dacb;
+    border-radius: 10px;
+  }
+
+  #search:focus-visible { outline: 3px solid #2d6a4f; outline-offset: 2px; }
+
+  .student {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid #d5dacb;
+  }
+
+  .grade { color: #667468; font-size: 14px; }
+
+  mark {
+    background: #cfe8d8;
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 1px;
+  }
+
+  #no-results { margin: 8px 0 0; color: #667468; font-size: 15px; }
+  #no-results[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<main class="app">
+  <h1>Students</h1>
+
+  <input id="search" type="search" placeholder="Search by name" aria-label="Search students" autocomplete="off">
+
+  <div id="student-list">
+    <div class="student"><span class="name">Abdulazizbek</span><span class="grade">Grade 10</span></div>
+    <div class="student"><span class="name">Amara Okafor</span><span class="grade">Grade 11</span></div>
+    <div class="student"><span class="name">Daniel Park</span><span class="grade">Grade 9</span></div>
+    <div class="student"><span class="name">Elena Rossi</span><span class="grade">Grade 12</span></div>
+    <div class="student"><span class="name">Hana Tanaka</span><span class="grade">Grade 10</span></div>
+    <div class="student"><span class="name">Liam Carter</span><span class="grade">Grade 11</span></div>
+    <div class="student"><span class="name">Mina Kwon</span><span class="grade">Grade 9</span></div>
+    <div class="student"><span class="name">Noah Alvarez</span><span class="grade">Grade 12</span></div>
+  </div>
+
+  <p id="no-results" hidden>No students match your search.</p>
+</main>
+
+<script>
+  const search = document.querySelector('#search');
+  const students = document.querySelectorAll('.student');
+  const noResults = document.querySelector('#no-results');
+
+  // Save each original name so highlighting can always start from clean text
+  students.forEach((row) => {
+    const nameEl = row.querySelector('.name');
+    nameEl.dataset.original = nameEl.textContent;
+  });
+
+  // Wrap every match of `term` in <mark>, leaving the rest of the name as is
+  function highlight(name, term) {
+    const lower = name.toLowerCase();
+    let result = '';
+    let pos = 0;
+    let idx;
+
+    while ((idx = lower.indexOf(term, pos)) !== -1) {
+      result += name.slice(pos, idx);
+      result += '<mark>' + name.slice(idx, idx + term.length) + '</mark>';
+      pos = idx + term.length;
+    }
+    return result + name.slice(pos);
+  }
+
+  // Filter as you type
+  search.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+    let visible = 0;
+
+    students.forEach((row) => {
+      const nameEl = row.querySelector('.name');
+      const name = nameEl.dataset.original;
+
+      if (name.toLowerCase().includes(term)) {
+        row.style.display = '';                 // show
+        nameEl.innerHTML = term ? highlight(name, term) : name;
+        visible++;
+      } else {
+        row.style.display = 'none';             // hide
+      }
+    });
+
+    noResults.hidden = visible > 0;
+  });
+</script>
+
+</body>
+</html>

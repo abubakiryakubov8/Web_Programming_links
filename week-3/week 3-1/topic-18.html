@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    .content-box {
+      width: 200px;
+      padding: 7px;
+      border: 2px solid aqua;
+      background: #ecfdf5;
+      margin-bottom: 16px;
+    }
+    /* total = 200 + 7*2 + 2*2 = 218px */
+
+    /* Better: border-box — width includes padding+border */
+    .border-box {
+      width: 100px;
+      padding: 15px;
+      border: 10px solid chartreuse;
+      background: #f5f3ff;
+    }
+    /* total = exactly 100px — content shrinks to 70px */
+
+    p { font-size: 13px; color: #475569; margin-top: 4px; }
+  </style>
+  <title>topic 18</title>
+</head>
+<body>
+  <div class="content-box">content-box</div>
+  <p>total = 200 + 7*2 + 2*2 = 218px (Actual is 200px)</p>
+
+  <div class="border-box">border-box</div>
+  <p>total = exactly 100px — content shrinks to 70px</p>
+</body>
+</html>

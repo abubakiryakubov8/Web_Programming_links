@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Built-in validation</title><link rel="stylesheet" href="style.css"></head>
+<body><main class="wrap">
+<h1>Built-in validation</h1>
+<p class="lead">Exercise 2. Break the rules on purpose and read the browser's messages.</p>
+<form id="f">
+  <div class="f"><label for="user">Username</label>
+  <input id="user" name="user" required minlength="4" maxlength="12" pattern="[A-Za-z0-9]+" title="4 to 12 letters or digits, no spaces" placeholder="Abdulazizbek">
+  <p class="hint">4 to 12 letters or digits.</p></div>
+  <div class="f"><label for="site">Website</label>
+  <input type="url" id="site" name="site" placeholder="https://example.com">
+  <p class="hint">Optional. Must start with http:// or https://.</p></div>
+  <div class="f"><label for="qty">Books to reserve</label>
+  <input type="number" id="qty" name="qty" min="1" max="5" step="1" required inputmode="numeric">
+  <p class="hint">A whole number from 1 to 5.</p></div>
+  <div class="f"><label for="pickup">Pickup date</label>
+  <input type="date" id="pickup" name="pickup" min="2026-11-01" max="2026-12-31" required>
+  <p class="hint">Between 1 Nov and 31 Dec 2026.</p></div>
+  <button type="submit">Reserve</button>
+  <p class="msg" id="ok" role="status" hidden>All rules passed. Nothing was sent (demo only).</p>
+</form>
+<p><a href="index.html">Back to Week 8</a></p>
+<footer>Abdulazizbek &middot; ID 202537225</footer>
+</main>
+<script>
+const ok=document.getElementById('ok'),f=document.getElementById('f');
+f.addEventListener('submit',e=>{e.preventDefault();ok.hidden=false});
+f.addEventListener('input',()=>{ok.hidden=true});
+</script></body></html>

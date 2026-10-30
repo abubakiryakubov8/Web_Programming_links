@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelf Finder - Search</title>
+<style>
+:root{--ink:#0e1a40;--cobalt:#2b45e6;--lemon:#ffe45c;--paper:#f3f5f9;--line:#cfd6e6;--muted:#4a5578;--err:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+nav{background:var(--ink);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+nav a{color:#fff;font-weight:bold;text-decoration:none}
+nav a:hover{text-decoration:underline}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+h1{font-family:Georgia,serif;font-size:clamp(30px,6vw,48px);margin:32px 0 16px}
+h2{font-family:Georgia,serif;font-size:21px;margin:0 0 12px}
+form{display:grid;grid-template-columns:1fr auto auto;gap:10px}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+input,select{width:100%;padding:12px;font-size:16px;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:6px}
+.layout{display:grid;grid-template-columns:1fr 290px;gap:28px;margin:24px 0 48px;align-items:start}
+#status{color:var(--muted);margin:0 0 14px;min-height:1.5em}
+#status.error{color:var(--err);font-weight:bold}
+#results{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.book{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-left:6px solid var(--cobalt);padding:10px 14px 10px 10px}
+.book img,.nocover{width:64px;height:92px;object-fit:cover;background:var(--line);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);text-align:center}
+.book h3{margin:0;font-size:16px;font-family:Georgia,serif;overflow-wrap:anywhere}
+.book p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.save,#more,#clear{font:inherit;font-weight:bold;cursor:pointer;border-radius:999px;padding:8px 16px;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+.save[aria-pressed="true"]{background:var(--lemon)}
+.save:hover,#more:hover,#clear:hover{background:var(--lemon)}
+#more{display:block;margin:20px auto 0;padding:12px 28px;background:var(--ink);color:#fff}
+#more:hover{color:var(--ink)}
+aside{background:#fff;border:2px solid var(--ink);padding:16px;position:sticky;top:12px}
+#shelf{list-style:none;margin:0 0 12px;padding:0;font-size:14px}
+#shelf li{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+#shelf button{border:0;background:none;color:var(--err);cursor:pointer;font:inherit;text-decoration:underline}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:24px;border-top:1px solid var(--line)}
+@media(max-width:760px){.layout{grid-template-columns:1fr}form{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}aside{position:static}.book{grid-template-columns:56px 1fr}.save{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<nav><a href="index.html">Shelf Finder</a><a href="#shelf-title">Reading list (<span id="count">0</span>)</a></nav>
+<div class="wrap">
+  <h1>Search the catalogue</h1>
+  <form id="form" role="search">
+    <div class="full"><label for="q">Title or author <small>(press / to jump here)</small></label>
+    <input id="q" type="search" autocomplete="off" placeholder="For example: Dune"></div>
+    <div><label for="sort">Sort by</label>
+    <select id="sort"><option value="">Best match</option><option value="new">Newest first</option><option value="old">Oldest first</option></select></div>
+    <div><label for="lang">Language</label>
+    <select id="lang"><option value="">Any</option><option value="eng">English</option><option value="spa">Spanish</option><option value="fre">French</option><option value="ger">German</option><option value="rus">Russian</option></select></div>
+  </form>
+  <div class="layout">
+    <section aria-labelledby="res-title">
+      <h2 id="res-title">Results</h2>
+      <p id="status" role="status" aria-live="polite">Type at least 2 characters to start searching.</p>
+      <ul id="results"></ul>
+      <button id="more" type="button" hidden>Load more books</button>
+    </section>
+    <aside aria-labelledby="shelf-title">
+      <h2 id="shelf-title">Reading list</h2>
+      <ul id="shelf"></ul>
+      <button id="clear" type="button">Clear list</button>
+    </aside>
+  </div>
+</div>
+<footer>Week 7 project by Abdulazizbek &middot; ID 202537225</footer>
+<script>
+const $ = id => document.getElementById(id);
+const q=$('q'), sort=$('sort'), lang=$('lang'), statusEl=$('status'), list=$('results'), more=$('more'), shelfEl=$('shelf'), count=$('count');
+let page=1, shown=0, ctrl, timer, shelf=[];
+try { shelf = JSON.parse(localStorage.getItem('shelf') || '[]'); } catch (e) {}
+
+function say(msg, cls){ statusEl.textContent = msg; statusEl.className = cls || ''; }
+function save(){ try { localStorage.setItem('shelf', JSON.stringify(shelf)); } catch (e) {} }
+const saved = key => shelf.some(b => b.key === key);
+
+function toggle(book, btn){
+  shelf = saved(book.key) ? shelf.filter(b => b.key !== book.key) : shelf.concat(book);
+  save(); renderShelf();
+  btn.setAttribute('aria-pressed', saved(book.key));
+  btn.textContent = saved(book.key) ? 'Saved' : 'Save';
+}
+
+function renderShelf(){
+  shelfEl.textContent = ''; count.textContent = shelf.length;
+  if (!shelf.length){ const li = document.createElement('li'); li.textContent = 'Nothing saved yet. Press Save on a book.'; shelfEl.appendChild(li); return; }
+  shelf.forEach(b => {
+    const li = document.createElement('li'), t = document.createElement('span'), x = document.createElement('button');
+    t.textContent = b.title; x.textContent = 'Remove'; x.type = 'button';
+    x.setAttribute('aria-label', 'Remove ' + b.title + ' from reading list');
+    x.onclick = () => { shelf = shelf.filter(s => s.key !== b.key); save(); renderShelf();
+      document.querySelectorAll('.save').forEach(s => { if (s.dataset.key === b.key){ s.setAttribute('aria-pressed','false'); s.textContent = 'Save'; } }); };
+    li.append(t, x); shelfEl.appendChild(li);
+  });
+}
+
+function card(d){
+  const book = { key:d.key, title:d.title || 'Untitled' };
+  const li = document.createElement('li'); li.className = 'book';
+  let cover;
+  if (d.cover_i){ cover = document.createElement('img'); cover.src = 'https://covers.openlibrary.org/b/id/' + d.cover_i + '-S.jpg'; cover.alt = 'Cover of ' + book.title; cover.loading = 'lazy'; }
+  else { cover = document.createElement('div'); cover.className = 'nocover'; cover.textContent = 'No cover'; }
+  const info = document.createElement('div'), h = document.createElement('h3'), a = document.createElement('p'), y = document.createElement('p');
+  h.textContent = book.title;
+  a.textContent = d.author_name ? d.author_name.slice(0,2).join(', ') : 'Unknown author';
+  y.textContent = d.first_publish_year ? 'First published ' + d.first_publish_year : 'Year unknown';
+  info.append(h, a, y);
+  const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'save'; btn.dataset.key = d.key;
+  btn.setAttribute('aria-label', 'Save ' + book.title + ' to reading list');
+  btn.setAttribute('aria-pressed', saved(d.key)); btn.textContent = saved(d.key) ? 'Saved' : 'Save';
+  btn.onclick = () => toggle(book, btn);
+  li.append(cover, info, btn);
+  return li;
+}
+
+async function run(reset){
+  const term = q.value.trim();
+  if (term.length < 2){ list.textContent = ''; more.hidden = true; say('Type at least 2 characters to start searching.'); return; }
+  if (reset){ page = 1; shown = 0; list.textContent = ''; }
+  if (ctrl) ctrl.abort(); ctrl = new AbortController();
+  say('Searching...'); more.disabled = true;
+  const p = new URLSearchParams({ q: term + (lang.value ? ' language:' + lang.value : ''), page, limit: 10,
+    fields: 'key,title,author_name,first_publish_year,cover_i' });
+  if (sort.value) p.set('sort', sort.value);
+  try {
+    const res = await fetch('https://openlibrary.org/search.json?' + p, { signal: ctrl.signal });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    data.docs.forEach(d => list.appendChild(card(d)));
+    shown += data.docs.length;
+    if (!shown) say('No books found for "' + term + '". Try a different spelling or set Language to Any.');
+    else say('Showing ' + shown + ' of ' + data.numFound.toLocaleString() + ' books for "' + term + '".');
+    more.hidden = shown >= data.numFound;
+    more.disabled = false;
+  } catch (err) {
+    if (err.name === 'AbortError') return;
+    if (!reset) page--;
+    say('Could not reach Open Library. Check your connection, then search again.', 'error');
+    more.disabled = false;
+  }
+}
+
+q.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => run(true), 450); });
+sort.addEventListener('change', () => run(true));
+lang.addEventListener('change', () => run(true));
+$('form').addEventListener('submit', e => { e.preventDefault(); clearTimeout(timer); run(true); });
+more.addEventListener('click', () => { page++; run(false); });
+$('clear').addEventListener('click', () => { shelf = []; save(); renderShelf();
+  document.querySelectorAll('.save').forEach(s => { s.setAttribute('aria-pressed','false'); s.textContent = 'Save'; }); });
+document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== q){ e.preventDefault(); q.focus(); } });
+renderShelf();
+</script>
+</body>
+</html>

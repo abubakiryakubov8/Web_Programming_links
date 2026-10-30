@@ -1,0 +1,62 @@
+body{
+    font-family: sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    text-decoration: underline;
+    color: blue;
+}
+
+.title{
+    margin:  auto;
+    align-items: center;
+    font-size: 30px;
+}
+
+
+.classs{
+    color: red;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto;
+}
+
+.gap{
+    gap: 10px;
+}
+
+.description{
+    font-size: 20px;
+    color: slategray;
+}
+
+.week-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 200px;
+    transition: all linear .3s;
+}
+
+.card:hover{
+
+    transform: translateY(-5px);
+}

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Accessibility Audit | Web Programming</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+            line-height: 1.7;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 80px 20px 110px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: #2563eb;
+            opacity: 0.18;
+            top: -250px;
+            right: -100px;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: #22c55e;
+            opacity: 0.12;
+            bottom: -180px;
+            left: -100px;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: clamp(42px, 7vw, 72px);
+            line-height: 1.05;
+            max-width: 850px;
+            margin-bottom: 20px;
+        }
+
+        header p {
+            max-width: 650px;
+            color: #cbd5e1;
+            font-size: 18px;
+        }
+
+        /* MAIN */
+
+        main {
+            max-width: 1100px;
+            margin: -50px auto 80px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* SCORE */
+
+        .score-card {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            gap: 30px;
+            align-items: center;
+            box-shadow: 0 18px 45px rgba(15,23,42,0.12);
+            margin-bottom: 60px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border: 10px solid #22c55e;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #15803d;
+            margin: auto;
+        }
+
+        .score-circle strong {
+            font-size: 42px;
+            line-height: 1;
+        }
+
+        .score-circle span {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .score-info h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .score-info p {
+            color: #667085;
+        }
+
+        .success {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+
+        section {
+            margin-bottom: 65px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .number {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+        }
+
+        /* BEFORE / AFTER */
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .audit-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid #e4e7ec;
+        }
+
+        .audit-card.before {
+            border-top: 5px solid #f59e0b;
+        }
+
+        .audit-card.after {
+            border-top: 5px solid #22c55e;
+        }
+
+        .label {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .before .label {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .after .label {
+            background: #f0fdf4;
+            color: #15803d;
+        }
+
+        .audit-card h3 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .audit-card p {
+            color: #667085;
+        }
+
+        /* ISSUE */
+
+        .issue-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .issue {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            border-left: 6px solid #f59e0b;
+            box-shadow: 0 8px 25px rgba(15,23,42,0.06);
+        }
+
+        .issue h3 {
+            margin-bottom: 10px;
+        }
+
+        .issue p {
+            color: #667085;
+        }
+
+        .issue code {
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-family: Consolas, monospace;
+        }
+
+        /* CODE */
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .code-box {
+            background: #111827;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .code-title {
+            background: #1f2937;
+            color: #d1d5db;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        pre {
+            padding: 22px;
+            overflow-x: auto;
+            color: #e5e7eb;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .blue {
+            color: #60a5fa;
+        }
+
+        .green {
+            color: #4ade80;
+        }
+
+        .yellow {
+            color: #facc15;
+        }
+
+        /* SCREENSHOTS */
+
+        .image-card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            border: 1px solid #e4e7ec;
+            margin-top: 25px;
+        }
+
+        .image-card img {
+            width: 100%;
+            min-height: 250px;
+            object-fit: contain;
+            background: #eef2f7;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 15px 5px 3px;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        /* RESULT */
+
+        .result {
+            background: linear-gradient(135deg, #172554, #1d4ed8);
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .result h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .result p {
+            color: #dbeafe;
+        }
+
+        .result-score {
+            font-size: 58px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        footer a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover,
+        footer a:focus {
+            text-decoration: underline;
+        }
+
+        /* FOCUS */
+
+        a:focus-visible {
+            outline: 4px solid #fbbf24;
+            outline-offset: 4px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 60px 20px 85px;
+            }
+
+            .score-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .comparison,
+            .issue-grid,
+            .code-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .result-score {
+                font-size: 48px;
+            }
+
+            .section-heading h2 {
+                font-size: 25px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <span class="eyebrow">
+            WEB PROGRAMMING • LIGHTHOUSE
+        </span>
+
+        <h1>
+            Accessibility Audit
+        </h1>
+
+        <p>
+            An accessibility review showing the problems found by
+            Google Lighthouse and the changes made to improve the
+            website's accessibility.
+        </p>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- SCORE -->
+
+    <div class="score-card">
+
+        <div class="score-circle">
+            <strong>100</strong>
+            <span>OUT OF 100</span>
+        </div>
+
+        <div class="score-info">
+
+            <h2>
+                Final Accessibility Score
+            </h2>
+
+            <p>
+                The website originally received a score of
+                <strong>65/100</strong>. After fixing two accessibility
+                issues, the score increased to
+                <span class="success">100/100</span>.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- BEFORE -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div class="number">01</div>
+
+            <h2>
+                Initial Audit
+            </h2>
+
+        </div>
+
+
+        <div class="comparison">
+
+            <article class="audit-card before">
+
+                <span class="label">
+                    BEFORE
+                </span>
+
+                <h3>
+                    65 / 100
+                </h3>
+
+                <p>
+                    Lighthouse identified accessibility issues
+                    that needed to be corrected.
+                </p>
+
+            </article>
+
+
+            <article class="audit-card">
+
+                <span class="label"
+                      style="background:#eff6ff;color:#1d4ed8;">
+
+                    TWO ISSUES
+
+                </span>
+
+                <h3>
+                    Language & Image
+                </h3>
+
+                <p>
+                    The page needed a document language declaration
+                    and alternative text for an image.
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <div class="image-card">
+
+            <img
+                src="./accessibilty1.png"
+                alt="Lighthouse accessibility audit showing a score of 67 out of 100"
+            >
+
+            <p class="image-caption">
+                Lighthouse results before making the accessibility fixes.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ISSUES -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div class="number">02</div>
+
+            <h2>
+                Problems Identified
+            </h2>
+
+        </div>
+
+
+        <div class="issue-grid">
+
+            <article class="issue">
+
+                <h3>
+                    Missing Language Attribute
+                </h3>
+
+                <p>
+                    The HTML document did not specify its primary
+                    language. Adding
+                    <code>lang="en"</code>
+                    allows browsers and assistive technologies to
+                    correctly identify the language of the page.
+                </p>
+
+            </article>
+
+
+            <article class="issue">
+
+                <h3>
+                    Missing Image Alternative Text
+                </h3>
+
+                <p>
+                    An image did not have an
+                    <code>alt</code>
+                    attribute. Alternative text provides a description
+                    of the image for users who rely on screen readers
+                    or when the image cannot be displayed.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHANGES -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div class="number">03</div>
+
+            <h2>
+                Changes Made
+            </h2>
+
+        </div>
+
+
+        <div class="code-grid">
+
+            <!-- BEFORE -->
+
+            <div class="code-box">
+
+                <div class="code-title">
+                    BEFORE
+                </div>
+
+                <pre><code><span class="blue">&lt;html&gt;</span>
+
+...
+
+<span class="blue">&lt;img</span>
+    src="image.jpg"
+<span class="blue">&gt;</span></code></pre>
+
+            </div>
+
+
+            <!-- AFTER -->
+
+            <div class="code-box">
+
+                <div class="code-title">
+                    AFTER
+                </div>
+
+                <pre><code><span class="blue">&lt;html</span>
+    <span class="yellow">lang="en"</span>
+<span class="blue">&gt;</span>
+
+...
+
+<span class="blue">&lt;img</span>
+    src="image.jpg"
+    <span class="green">alt="Description of the image"</span>
+<span class="blue">&gt;</span></code></pre>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHY -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div class="number">04</div>
+
+            <h2>
+                Why These Changes Matter
+            </h2>
+
+        </div>
+
+
+        <div class="comparison">
+
+            <article class="audit-card">
+
+                <h3>
+                    <code>lang="en"</code>
+                </h3>
+
+                <p>
+                    Helps screen readers pronounce and interpret
+                    the content using the correct language rules.
+                </p>
+
+            </article>
+
+
+            <article class="audit-card">
+
+                <h3>
+                    <code>alt</code> Text
+                </h3>
+
+                <p>
+                    Gives users who cannot see the image a textual
+                    description of its important information.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- AFTER -->
+
+    <section>
+
+        <div class="section-heading">
+
+            <div class="number">05</div>
+
+            <h2>
+                Final Audit
+            </h2>
+
+        </div>
+
+
+        <div class="audit-card after">
+
+            <span class="label">
+                PASSED
+            </span>
+
+            <h3>
+                100 / 100
+            </h3>
+
+            <p>
+                After adding <strong>lang="en"</strong> to the HTML
+                element and providing appropriate
+                <strong>alt text</strong> for the image, the
+                accessibility audit achieved a perfect score.
+            </p>
+
+        </div>
+
+
+        <div class="image-card">
+
+            <img
+                src="./accessibilty.png"
+                alt="Lighthouse accessibility audit showing the final score of 100 out of 100"
+            >
+
+            <p class="image-caption">
+                Lighthouse results after the accessibility improvements.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL RESULT -->
+
+    <section>
+
+        <div class="result">
+
+            <div>
+
+                <h2>
+                    Accessibility Improved
+                </h2>
+
+                <p>
+                    Two small HTML improvements increased the
+                    Lighthouse accessibility score from 65 to 100.
+                </p>
+
+            </div>
+
+            <div class="result-score">
+                65 → 100
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        Web Programming Portfolio · Accessibility Audit
+    </p>
+
+    <p style="margin-top:8px;">
+
+        <a href="index.html">
+            ← Back to Homepage
+        </a>
+
+    </p>
+
+</footer>
+
+</body>
+</html>

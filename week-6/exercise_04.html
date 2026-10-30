@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Random User Profiles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sage: #cfdccb;
+        --ink: #1f2d27;
+        --lan: #e4572e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--sage);
+        color: var(--ink);
+        font:
+          16px/1.5 "Space Grotesk",
+          system-ui,
+          sans-serif;
+        padding: 32px clamp(16px, 5vw, 56px);
+      }
+      header {
+        max-width: 1000px;
+        margin: 0 auto 28px;
+      }
+      h1 {
+        font-size: 2.2rem;
+        margin: 0;
+      }
+      header p {
+        margin: 4px 0 18px;
+      }
+      form {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: end;
+        background: #fff;
+        padding: 14px 16px;
+        border-radius: 14px;
+        width: fit-content;
+        max-width: 100%;
+      }
+      label {
+        display: grid;
+        gap: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      select {
+        font: inherit;
+        padding: 8px 10px;
+        border: 1.5px solid var(--ink);
+        border-radius: 8px;
+        background: #fff;
+      }
+      button {
+        font: inherit;
+        font-weight: 700;
+        background: var(--ink);
+        color: #fff;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+      }
+      select:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--lan);
+        outline-offset: 2px;
+      }
+      #grid {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 34px 22px;
+        padding-top: 20px;
+      }
+      .badge {
+        background: #fff;
+        border-radius: 16px;
+        padding: 34px 16px 20px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 8px 0 rgba(31, 45, 39, 0.15);
+      }
+      .badge::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        width: 46px;
+        height: 8px;
+        margin-left: -23px;
+        border-radius: 8px;
+        background: var(--sage);
+      }
+      .badge::after {
+        content: "";
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        width: 4px;
+        height: 36px;
+        margin-left: -2px;
+        background: var(--lan);
+      }
+      .badge img {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--sage);
+        display: block;
+        margin: 0 auto 12px;
+      }
+      .badge h2 {
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      .badge a {
+        color: var(--ink);
+        font-size: 0.82rem;
+        word-break: break-all;
+      }
+      .badge small {
+        display: block;
+        margin-top: 8px;
+        opacity: 0.7;
+      }
+      #msg {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Random User Profiles</h1>
+      <p>Fake people from randomuser.me: photo, name and email.</p>
+      <form id="f">
+        <label
+          >How many
+          <select id="n">
+            <option>3</option>
+            <option selected>6</option>
+            <option>9</option>
+            <option>12</option>
+          </select></label
+        >
+        <label
+          >Gender
+          <select id="g">
+            <option value="">Any</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select></label
+        >
+        <button id="go">Load Users</button>
+      </form>
+    </header>
+    <p id="msg" aria-live="polite">
+      Choose how many people you want, then press Load Users.
+    </p>
+    <div id="grid"></div>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      $("f").onsubmit = async (ev) => {
+        ev.preventDefault();
+        const g = $("g").value;
+        const url = `https://randomuser.me/api/?results=${$("n").value}${g ? "&gender=" + g : ""}`;
+        $("go").disabled = true;
+        $("msg").textContent = "Loading…";
+        $("grid").innerHTML = "";
+        try {
+          const r = await fetch(url);
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          const { results } = await r.json();
+          $("msg").textContent = `${results.length} profiles loaded.`;
+          results.forEach((u) => {
+            const d = document.createElement("article");
+            d.className = "badge";
+            d.innerHTML = '<img alt=""><h2></h2><a></a><small></small>';
+            d.querySelector("img").src = u.picture.large;
+            d.querySelector("img").alt =
+              "Photo of " + u.name.first + " " + u.name.last;
+            d.querySelector("h2").textContent =
+              `${u.name.title} ${u.name.first} ${u.name.last}`;
+            const a = d.querySelector("a");
+            a.textContent = u.email;
+            a.href = "mailto:" + u.email;
+            d.querySelector("small").textContent =
+              `${u.location.city}, ${u.location.country}`;
+            $("grid").appendChild(d);
+          });
+        } catch (e) {
+          $("msg").textContent =
+            "Could not load users (" + e.message + "). Please try again.";
+        }
+        $("go").disabled = false;
+      };
+    </script>
+  </body>
+</html>

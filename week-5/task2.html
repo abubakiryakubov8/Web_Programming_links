@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Basics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    button, input {
+      padding: 10px;
+      margin: 5px 0;
+      outline: none;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid blue;
+      border-radius: 15px;
+    }
+
+    #message {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Part 4 — JavaScript Basics</h1>
+
+  <section>
+    <h2>1. Variables and Output</h2>
+    <button onclick="showOutput()">Show Output</button>
+    <p id="output"></p>
+  </section>
+
+  <section>
+    <h2>2. Change HTML Elements</h2>
+    <p id="message">Original text</p>
+    <button onclick="changeText()">Click me</button>
+  </section>
+
+  <section>
+    <h2>3. Read User Input</h2>
+    <input type="text" id="nameInput" placeholder="Your name">
+    <button onclick="greet()">Greet</button>
+    <p id="greeting"></p>
+  </section>
+
+  <section>
+    <h2>4. Conditions (if / else)</h2>
+    <input type="number" id="scoreInput" placeholder="Enter your score">
+    <button onclick="checkScore()">Check Grade</button>
+    <p id="grade"></p>
+  </section>
+
+  <section>
+    <h2>5. Loops</h2>
+    <button onclick="showLoops()">Run Loops</button>
+    <p id="loopOutput"></p>
+  </section>
+
+  <section>
+    <h2>6. Save Data with localStorage</h2>
+    <input type="text" id="username" placeholder="Enter username">
+    <button onclick="saveName()">Save Name</button>
+    <button onclick="loadName()">Load Name</button>
+    <button onclick="deleteName()">Delete Name</button>
+    <p id="savedOutput"></p>
+  </section>
+
+  <script>
+    function showOutput() {
+      let name = 'Abdulazizbek';
+      const MAX = 100;
+
+      console.log(name);
+      console.log(MAX);
+
+      document.getElementById('output').textContent =
+        'Name: ' + name + ', MAX: ' + MAX;
+    }
+
+    function changeText() {
+      let el = document.getElementById('message');
+      el.textContent = 'Text was changed!';
+      el.style.color = 'aqua';
+    }
+
+    function greet() {
+      let name = document.getElementById('nameInput').value.trim();
+
+      if (name === '') {
+        document.getElementById('greeting').textContent =
+          'Please enter your name.';
+      } else {
+        document.getElementById('greeting').textContent =
+          'Hello, ' + name + '!';
+      }
+    }
+
+    function checkScore() {
+      let score = Number(document.getElementById('scoreInput').value);
+      let grade = '';
+
+      if (document.getElementById('scoreInput').value === '') {
+        grade = 'Please enter a score.';
+      } else if (score < 0 || score > 100) {
+        grade = 'Score must be between 0 and 100.';
+      } else if (score >= 90) {
+        grade = 'Grade A';
+      } else if (score >= 80) {
+        grade = 'Grade B';
+      } else if (score >= 70) {
+        grade = 'Grade C';
+      } else {
+        grade = 'Grade F';
+      }
+
+      document.getElementById('grade').textContent = grade;
+    }
+
+    function showLoops() {
+      let result = '';
+
+      for (let i = 1; i <= 5; i++) {
+        result += 'Step ' + i + '<br>';
+      }
+
+      document.getElementById('loopOutput').innerHTML = result;
+    }
+
+    function saveName() {
+      let name = document.getElementById('username').value.trim();
+
+      if (name === '') {
+        document.getElementById('savedOutput').textContent =
+          'Please enter a username.';
+        return;
+      }
+
+      localStorage.setItem('username', name);
+      document.getElementById('savedOutput').textContent =
+        'Username saved!';
+    }
+
+    function loadName() {
+      let saved = localStorage.getItem('username');
+
+      document.getElementById('savedOutput').textContent =
+        saved ? 'Saved username: ' + saved : 'No saved username.';
+    }
+
+    function deleteName() {
+      localStorage.removeItem('username');
+      document.getElementById('savedOutput').textContent =
+        'Saved username deleted.';
+    }
+  </script>
+
+</body>
+</html>

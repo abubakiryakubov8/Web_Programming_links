@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3-1</title>
+
+    <style>
+        :root {
+            --ink: #14121f;
+            --bg: #f3f3fa;
+            --yellow: #ffe066;
+            --lilac: #cdbdff;
+            --mint: #b5f0d0;
+            --pink: #ffb8cd;
+            --sky: #aed6ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", Verdana, sans-serif;
+            color: var(--ink);
+            background-color: var(--bg);
+            background-image: radial-gradient(#c9c9de 1.5px, transparent 1.5px);
+            background-size: 22px 22px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 72px 0 40px;
+        }
+
+        .title {
+            margin: 0;
+            max-width: 14em;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-weight: 900;
+            font-size: clamp(32px, 7vw, 60px);
+            line-height: 1.05;
+            overflow-wrap: anywhere;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-size: 26px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        .week-container {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 20px;
+        }
+
+        .card a {
+            display: block;
+            padding: 24px 18px;
+            color: var(--ink);
+            text-decoration: none;
+            font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+            font-size: 20px;
+            line-height: 1.15;
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            transition: transform 0.12s, box-shadow 0.12s;
+        }
+
+        .card:nth-child(5n+1) a { background: var(--lilac); }
+        .card:nth-child(5n+2) a { background: var(--mint); }
+        .card:nth-child(5n+3) a { background: var(--pink); }
+        .card:nth-child(5n+4) a { background: var(--sky); }
+        .card:nth-child(5n+5) a { background: var(--yellow); }
+
+        .card a:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 var(--ink);
+        }
+
+        .card a:focus-visible {
+            outline: 4px solid var(--ink);
+            outline-offset: 4px;
+        }
+
+        footer {
+            margin-top: 24px;
+            padding: 20px 0 32px;
+            border-top: 3px solid var(--ink);
+            font-size: 14px;
+        }
+
+        @media (max-width: 760px) {
+            header {
+                padding: 48px 0 32px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card a {
+                transition: none;
+            }
+
+            .card a:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">These are assignments for Week 3-1</h1>
+        </header>
+
+        <main>
+            <section>
+                <h2>Topics</h2>
+                <ul class="week-container">
+                    <li class="card"><a href="../week-3/week 3-1/topic-1.html">Topic 1</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-2.html">Topic 2</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-3.html">Topic 3</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-4.html">Topic 4</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-5.html">Topic 5</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-6.html">Topic 6</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-7.html">Topic 7</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-8.html">Topic 8</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-9.html">Topic 9</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-10.html">Topic 10</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-11.html">Topic 11</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-12.html">Topic 12</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-13.html">Topic 13</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-14.html">Topic 14</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-15.html">Topic 15</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-16.html">Topic 16</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-17.html">Topic 17</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-18.html">Topic 18</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Topic-19.html">Topic 19</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-20.html">Topic 20</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-21.html">Topic 21</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-22.html">Topic 22</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-23.html">Topic 23</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-24.html">Topic 24</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/topic-25.html">Topic 25</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Exercises</h2>
+                <ul class="week-container">
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-1.html">Exercise 1</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-2.html">Exercise 2</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-3.html">Exercise 3</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-4.html">Exercise 4</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-5.html">Exercise 5</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-6.html">Exercise 6</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-7.html">Exercise 7</a></li>
+                    <li class="card"><a href="../week-3/week 3-1/Exercise-8.html">Exercise 8</a></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>Abdulazizbek &middot; ID 202537225 &middot; Computer Engineering</footer>
+    </div>
+</body>
+</html>

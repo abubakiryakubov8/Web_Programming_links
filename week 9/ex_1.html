@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Keyboard playground</title><link rel="stylesheet" href="style.css"></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<main class="wrap" id="main" tabindex="-1">
+<h1>Keyboard playground</h1>
+<p class="lead">Put the mouse away. Use Tab and Shift+Tab to move, Enter or Space to press, and Escape to close the details.</p>
+<section class="panel" aria-labelledby="h-sw"><h2 id="h-sw">Switch</h2>
+<button type="button" role="switch" aria-checked="false" id="sw">Email notifications <span id="swstate" aria-hidden="true">Off</span></button></section>
+<section class="panel" aria-labelledby="h-d"><h2 id="h-d">Disclosure</h2>
+<button type="button" class="alt" id="dh" aria-expanded="false" aria-controls="dp">Why keyboard access matters</button>
+<p id="dp" hidden>Many people cannot use a mouse. Native buttons and links work with the keyboard for free, so use them instead of clickable divs.</p></section>
+<section class="panel" aria-labelledby="h-l"><h2 id="h-l">What the keyboard just did</h2>
+<ol id="log" aria-live="off"><li>Nothing yet. Press Tab.</li></ol></section>
+<p><a href="index.html">Back to Week 9</a></p>
+<footer>Abdulazizbek &middot; ID 202537225</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id), log=$('log'), sw=$('sw'), dh=$('dh'), dp=$('dp');
+function add(t){if(log.firstChild&&log.firstChild.textContent.startsWith('Nothing'))log.textContent='';
+  const li=document.createElement('li');li.textContent=t;log.prepend(li);while(log.children.length>6)log.lastChild.remove()}
+const nameOf=el=>(el.getAttribute('aria-label')||el.textContent.trim()||el.tagName).slice(0,40);
+document.addEventListener('focusin',e=>add('Focus moved to: '+nameOf(e.target)));
+document.addEventListener('keydown',e=>{if(['Enter',' ','Escape','Tab'].includes(e.key))add('Key pressed: '+(e.key===' '?'Space':e.key))});
+sw.onclick=()=>{const on=sw.getAttribute('aria-checked')!=='true';sw.setAttribute('aria-checked',on);$('swstate').textContent=on?'On':'Off'};
+function setOpen(o){dh.setAttribute('aria-expanded',o);dp.hidden=!o}
+dh.onclick=()=>setOpen(dh.getAttribute('aria-expanded')!=='true');
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!dp.hidden){setOpen(false);dh.focus()}});
+</script></body></html>

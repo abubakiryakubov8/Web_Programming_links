@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelf Finder</title>
+<style>
+:root{--ink:#0e1a40;--cobalt:#2b45e6;--lemon:#ffe45c;--paper:#f3f5f9;--line:#cfd6e6;--muted:#4a5578}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+a:focus-visible,button:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+.hero{background:var(--ink);color:#fff;padding:72px 24px 80px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-family:Georgia,serif;font-size:clamp(40px,8vw,76px);line-height:1.05;margin:0 0 20px;max-width:12em}
+.hero p{max-width:34em;font-size:18px;color:#d5dcf5;margin:0 0 32px}
+.cta{display:inline-block;background:var(--lemon);color:var(--ink);font-weight:bold;padding:15px 28px;text-decoration:none;border-radius:999px}
+.cta:hover{background:#fff}
+main{padding:48px 24px}
+h2{font-family:Georgia,serif;font-size:26px;margin:0 0 20px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+li{background:#fff;border:1px solid var(--line);border-left:6px solid var(--cobalt);padding:16px 20px}
+li strong{display:block;font-size:17px}
+li span{color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>Find any book while you type.</h1>
+    <p>Shelf Finder searches the Open Library catalogue live, lets you sort and filter by language, and keeps a reading list on your device.</p>
+    <a class="cta" href="book-search.html">Start searching</a>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <h2>What you can do</h2>
+    <ul>
+      <li><strong>Live results</strong><span>Results update as you type, with no button to press.</span></li>
+      <li><strong>Sort and filter</strong><span>Order by newest or oldest, and limit results to one language.</span></li>
+      <li><strong>Reading list</strong><span>Save books to a list that is still there when you come back.</span></li>
+    </ul>
+  </div>
+</main>
+<footer>Week 7 project by Abdulazizbek &middot; ID 202537225</footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Student sign-up</title><link rel="stylesheet" href="style.css">
+<style>
+.bad{border-color:var(--bad)!important}
+#summary{border:2px solid var(--bad);background:#fdf2f1;padding:12px 18px;margin-bottom:16px;border-radius:6px}
+#summary[hidden]{display:none}
+meter{width:100%;height:12px}
+dl{margin:8px 0 0}dt{font-weight:bold}dd{margin:0 0 8px}
+</style></head>
+<body><main class="wrap">
+<h1>Student sign-up</h1>
+<p class="lead">Homework. Press Sign up at any time and the form will tell you what is missing.</p>
+<div id="summary" role="alert" tabindex="-1" hidden></div>
+<form id="reg" novalidate>
+  <div class="f"><label for="name">Full name</label>
+  <input id="name" name="name" required autocomplete="name" placeholder="Abdulazizbek" aria-describedby="name-err"><p class="err" id="name-err"></p></div>
+  <div class="f"><label for="sid">Student ID</label>
+  <input id="sid" name="sid" required pattern="[0-9]{9}" inputmode="numeric" data-msg="Student ID must be exactly 9 digits." placeholder="202537225" aria-describedby="sid-err"><p class="err" id="sid-err"></p></div>
+  <div class="f"><label for="email">Email</label>
+  <input type="email" id="email" name="email" required autocomplete="email" placeholder="abdulazizbek@example.com" aria-describedby="email-err"><p class="err" id="email-err"></p></div>
+  <div class="f"><label for="major">Major</label>
+  <select id="major" name="major" required aria-describedby="major-err"><option value="">Choose a major</option><option>Computer Engineering</option><option>Software</option><option>Artificial Intelligence</option><option>Business Administration</option></select><p class="err" id="major-err"></p></div>
+  <div class="f"><label for="year">Graduation year</label>
+  <input type="number" id="year" name="year" required min="2026" max="2032" data-msg="Enter a year from 2026 to 2032." inputmode="numeric" aria-describedby="year-err"><p class="err" id="year-err"></p></div>
+  <div class="f"><label for="pw">Password</label>
+  <div class="row"><input type="password" id="pw" name="pw" required minlength="8" autocomplete="new-password" aria-describedby="pw-hint pw-err"><button type="button" class="ghost" id="show" aria-pressed="false">Show</button></div>
+  <meter id="meter" min="0" max="4" value="0" aria-hidden="true"></meter>
+  <p class="hint" id="pw-hint">Strength: none yet. Use 8+ characters, upper and lower case, a digit and a symbol.</p><p class="err" id="pw-err"></p></div>
+  <div class="f"><label for="pw2">Confirm password</label>
+  <input type="password" id="pw2" name="pw2" required autocomplete="new-password" aria-describedby="pw2-err"><p class="err" id="pw2-err"></p></div>
+  <div class="f"><label for="bio">About you</label>
+  <textarea id="bio" name="bio" maxlength="160" rows="3" aria-describedby="bio-count"></textarea><p class="hint" id="bio-count">0 / 160</p></div>
+  <div class="f"><label><input type="checkbox" id="terms" name="terms" required aria-describedby="terms-err"> I accept the terms</label><p class="err" id="terms-err"></p></div>
+  <button type="submit">Sign up</button>
+</form>
+<section class="panel" id="review" hidden style="margin-top:20px" tabindex="-1" aria-labelledby="rv"><h2 id="rv">Review your details</h2><dl id="rl"></dl><p class="hint">Demo only: nothing was sent and the password is not shown.</p></section>
+<p><a href="index.html">Back to Week 8</a></p>
+<footer>Abdulazizbek &middot; ID 202537225</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id), form=$('reg'), pw=$('pw'), pw2=$('pw2');
+const fields=[...form.querySelectorAll('input:not(.ghost),select')];
+const labelOf=el=>(el.labels[0]||{}).textContent.trim();
+function errorFor(el){const v=el.validity;if(v.valid)return'';
+  if(v.valueMissing)return el.type==='checkbox'?'You must accept the terms.':'This field is required.';
+  if(v.typeMismatch)return'Enter an address like name@example.com.';
+  if(v.patternMismatch||v.rangeUnderflow||v.rangeOverflow)return el.dataset.msg;
+  if(v.tooShort)return'Use at least '+el.minLength+' characters.';
+  return el.validationMessage;}
+function show(el){const m=errorFor(el);$(el.id+'-err').textContent=m;el.setAttribute('aria-invalid',m?'true':'false');el.classList.toggle('bad',!!m);return m}
+function matchCheck(){pw2.setCustomValidity(pw2.value&&pw2.value!==pw.value?'Passwords do not match.':'')}
+function strength(){const s=pw.value;let n=0;if(s.length>=8)n++;if(/[a-z]/.test(s)&&/[A-Z]/.test(s))n++;if(/\d/.test(s))n++;if(/[^A-Za-z0-9]/.test(s))n++;
+  $('meter').value=n;$('pw-hint').textContent='Strength: '+(s?['very weak','weak','fair','good','strong'][n]:'none yet')+'. Use 8+ characters, upper and lower case, a digit and a symbol.'}
+fields.forEach(el=>{el.addEventListener('blur',()=>{matchCheck();el.dataset.t=1;show(el)});
+  el.addEventListener('input',()=>{matchCheck();if(el.dataset.t)show(el);if(el===pw&&pw2.dataset.t)show(pw2)})});
+pw.addEventListener('input',strength);
+$('bio').addEventListener('input',e=>{$('bio-count').textContent=e.target.value.length+' / 160'});
+$('show').onclick=function(){const h=pw.type==='password';pw.type=pw2.type=h?'text':'password';this.textContent=h?'Hide':'Show';this.setAttribute('aria-pressed',h)};
+form.addEventListener('submit',e=>{e.preventDefault();matchCheck();$('review').hidden=true;
+  const bad=fields.filter(el=>{el.dataset.t=1;return show(el)}),box=$('summary');
+  if(bad.length){box.hidden=false;box.textContent='';const p=document.createElement('p');p.textContent=bad.length+(bad.length>1?' fields need':' field needs')+' attention:';
+    const ul=document.createElement('ul');bad.forEach(el=>{const li=document.createElement('li'),a=document.createElement('a');a.href='#'+el.id;a.textContent=labelOf(el)+': '+errorFor(el);
+      a.onclick=ev=>{ev.preventDefault();el.focus()};li.appendChild(a);ul.appendChild(li)});box.append(p,ul);box.focus();return}
+  $('summary').hidden=true;const dl=$('rl');dl.textContent='';
+  [['Name',$('name').value],['Student ID',$('sid').value],['Email',$('email').value],['Major',$('major').value],['Graduation year',$('year').value],['About you',$('bio').value||'(empty)']].forEach(([k,v])=>{
+    const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;dl.append(dt,dd)});
+  $('review').hidden=false;$('review').focus()});
+</script></body></html>

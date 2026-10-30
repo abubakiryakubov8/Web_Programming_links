@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>My CSS Advanced Page</title>
+<style>
+
+  /* 1. CSS variables + dark mode -------------------------------- */
+  :root {
+    --primary: #0f766e;
+    --accent: #14b8a6;
+    --bg: #f0fdfa;
+    --surface: #ffffff;
+    --text: #134e4a;
+    --radius: 12px;
+    --nav-height: 60px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: #2dd4bf;
+      --accent: #5eead4;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text: #e2e8f0;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: sans-serif;
+    padding-top: var(--nav-height); /* offset for fixed nav */
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* 2. Fixed navigation bar --------------------------------------- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--accent);
+    z-index: 100;
+  }
+
+  nav span { font-weight: bold; }
+
+  nav div a {
+    margin-left: 20px;
+    font-weight: 500;
+  }
+
+  nav div a:hover { color: var(--primary); }
+
+  /* 3. Hero section with fade-in @keyframes ------------------------ */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero {
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .hero h1 { font-size: 2.2rem; margin-bottom: 8px; }
+  .hero p { color: var(--accent); }
+
+  /* 5. Sticky section heading --------------------------------------- */
+  .sticky-h2 {
+    position: sticky;
+    top: var(--nav-height);
+    background: var(--bg);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--accent);
+    z-index: 10;
+  }
+
+  .skills-section { padding-bottom: 40px; }
+
+  /* 4. Responsive grid with ::before icons + hover ------------------- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(15, 118, 110, 0.25);
+  }
+
+  .card[data-icon]::before {
+    content: attr(data-icon) '  ';
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  nav div a:hover{
+    color: #14b8a6;
+  }
+  nav span{
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <span>Abdulazizbek</span>
+    <div><a href="#">Home</a> <a href="#">Skills</a></div>
+  </nav>
+
+  <section class="hero">
+    <h1>Hello, I am Abdulazizbek</h1>
+    <p>Computer Science · Gachon University · Week 3 CSS Advanced</p>
+  </section>
+
+  <section class="skills-section">
+    <h2 class="sticky-h2">My Skills</h2>
+    <div class="grid">
+      <div class="card" data-icon="🌐">HTML5 — Structure</div>
+      <div class="card" data-icon="🎨">CSS3 — Styling</div>
+      <div class="card" data-icon="⚡">JavaScript — Behaviour</div>
+      <div class="card" data-icon="📐">Flexbox — 1D Layout</div>
+      <div class="card" data-icon="🗂">Grid — 2D Layout</div>
+      <div class="card" data-icon="📱">Responsive — Any Screen</div>
+    </div>
+  </section>
+
+</body>
+</html>

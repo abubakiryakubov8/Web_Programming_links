@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Card</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .profile-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background-color: #15803d;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0 auto 16px;
+    }
+
+    .name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0 0 8px;
+    }
+
+    .role {
+      color: #64748b;
+      margin: 0 0 20px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 20px 0;
+    }
+
+    .skills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      background-color: #15803d;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="profile-card">
+
+    <img src="./avatar.jpg" alt="" class="avatar">
+
+    <h2 class="name">Abdulaziz</h2>
+
+    <p class="role">Front-End Developer</p>
+
+    <hr>
+
+    <div class="skills">
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+      <span class="badge">JavaScript</span>
+      <span class="badge">React</span>
+    </div>
+
+  </div>
+
+</body>
+</html>

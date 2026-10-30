@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CSS-only feedback</title><link rel="stylesheet" href="style.css">
+<style>
+.m{display:none;margin:4px 0 0;font-size:13px;font-weight:bold}
+.ok{color:var(--good)}.bad{color:var(--bad)}
+input:user-valid{border-color:var(--good);background:#f1fbf6}
+input:user-invalid{border-color:var(--bad);background:#fdf2f1}
+input:user-valid ~ .ok,input:user-invalid ~ .bad{display:block}
+.f:has(input:user-valid) label::after{content:" \2713";color:var(--good)}
+.f:has(input:user-invalid) label::after{content:" \2717";color:var(--bad)}
+</style></head>
+<body><main class="wrap">
+<h1>CSS-only feedback</h1>
+<p class="lead">Exercise 3. No JavaScript: messages and marks appear only after you have touched a field. Needs a current browser.</p>
+<form>
+  <div class="f"><label for="sid">Student ID</label>
+  <input id="sid" name="sid" pattern="[0-9]{9}" inputmode="numeric" required placeholder="202537225">
+  <p class="m ok">ID format is correct.</p><p class="m bad">Use exactly 9 digits.</p></div>
+  <div class="f"><label for="em">Email</label>
+  <input type="email" id="em" name="email" required placeholder="abdulazizbek@example.com">
+  <p class="m ok">Email looks valid.</p><p class="m bad">Enter an address like name@example.com.</p></div>
+  <div class="f"><label for="pw">Password</label>
+  <input type="password" id="pw" name="pw" minlength="10" required placeholder="At least 10 characters">
+  <p class="m ok">Long enough.</p><p class="m bad">Use at least 10 characters.</p></div>
+  <button type="submit">Check</button>
+</form>
+<p><a href="index.html">Back to Week 8</a></p>
+<footer>Abdulazizbek &middot; ID 202537225</footer>
+</main></body></html>

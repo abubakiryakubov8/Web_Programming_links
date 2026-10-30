@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Alt text workshop</title><link rel="stylesheet" href="style.css">
+<style>.card img{display:block;width:100%;height:150px;object-fit:contain;background:#fff;border-radius:6px}.card label.c{font-weight:normal}</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<main class="wrap" id="main" tabindex="-1">
+<h1>Alt text workshop</h1>
+<p class="lead">Write alt text for each image, or tick "decorative". The preview shows roughly what a screen reader announces.</p>
+<div id="cards"></div>
+<button type="button" id="check">Rate all my alt text</button>
+<p id="summary" role="status" class="hint"></p>
+<p><a href="index.html">Back to Week 9</a></p>
+<footer>Abdulazizbek &middot; ID 202537225</footer>
+</main>
+<script>
+const wrap=s=>'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240">'+s+'</svg>');
+const imgs=[
+ {t:'A photo-style scene',cap:'',svg:'<rect width="400" height="240" fill="#bfe3ff"/><circle cx="300" cy="70" r="36" fill="#ffd166"/><path d="M0 240 120 110 220 200 300 140 400 240Z" fill="#2f6f4f"/>'},
+ {t:'A divider between sections',cap:'',svg:'<rect width="400" height="240" fill="#dcfce7"/><path d="M0 120Q50 50 100 120T200 120T300 120T400 120" fill="none" stroke="#178056" stroke-width="12"/>'},
+ {t:'A chart',cap:'Library visits: 300 in May, 450 in June, 620 in July.',svg:'<rect width="400" height="240" fill="#f3e8ff"/><path d="M50 200H360M50 200V30" stroke="#6b647e" stroke-width="3"/><rect x="90" y="140" width="55" height="60" fill="#9f8ad6"/><rect x="180" y="110" width="55" height="90" fill="#7e65c4"/><rect x="270" y="60" width="55" height="140" fill="#5b3aa8"/>'}];
+function rate(alt,deco){const a=alt.trim();
+ if(deco)return a?['bad','Decorative images should have no alt text.']:['ok','Skipped by screen readers. Right for decoration.'];
+ if(!a)return['bad','Missing: describe the image or tick decorative.'];
+ if(/^(image|picture|photo|graphic)\s+of/i.test(a))return['bad','Drop "image of": screen readers already say it is an image.'];
+ if(/\.(jpe?g|png|svg|gif)$/i.test(a))return['bad','That is a file name, not a description.'];
+ if(a.length<10)return['bad','Too short to describe the image.'];
+ if(a.length>125)return['bad','Over 125 characters: put extra detail in a caption.'];
+ return['ok','Good: specific and a sensible length.']}
+const cards=document.getElementById('cards');
+imgs.forEach((d,i)=>{const s=document.createElement('section');s.className='panel card';s.setAttribute('aria-labelledby','h'+i);
+ const h=document.createElement('h2');h.id='h'+i;h.textContent='Image '+(i+1)+': '+d.t;
+ const fig=document.createElement('figure');fig.style.margin='0';const im=document.createElement('img');im.src=wrap(d.svg);im.alt=''; fig.appendChild(im);
+ if(d.cap){const fc=document.createElement('figcaption');fc.className='hint';fc.textContent=d.cap;fig.appendChild(fc)}
+ const l=document.createElement('label');l.htmlFor='t'+i;l.textContent='Alt text';
+ const t=document.createElement('textarea');t.id='t'+i;t.rows=2;
+ const l2=document.createElement('label');l2.className='c';const c=document.createElement('input');c.type='checkbox';c.id='c'+i;l2.append(c,' This image is decorative');
+ const pv=document.createElement('p');pv.className='hint';const fb=document.createElement('p');fb.className='hint';
+ const upd=()=>{im.alt=c.checked?'':t.value;t.disabled=c.checked;if(c.checked)t.value='';
+  pv.textContent='Screen reader: '+(c.checked?'(nothing, image skipped)':t.value.trim()?'"graphic, '+t.value.trim()+'"':'"graphic" or the file name');
+  const[k,m]=rate(t.value,c.checked);fb.className='hint '+k;fb.textContent=(k==='ok'?'\u2713 ':'\u2717 ')+m;s._ok=k==='ok'};
+ t.addEventListener('input',upd);c.addEventListener('change',upd);
+ s.append(h,fig,l,t,l2,pv,fb);cards.appendChild(s);upd()});
+document.getElementById('check').onclick=()=>{const n=[...cards.children].filter(s=>s._ok).length;
+ document.getElementById('summary').textContent=n+' of '+imgs.length+' images have good alt text.'+(n===imgs.length?' Nice work.':' Fix the marked ones.')};
+</script></body></html>

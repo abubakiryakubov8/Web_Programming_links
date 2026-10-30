@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body    { color: #1e293b; }          /* all text inherits this */
+
+    .red    { color: blue; }              /* named colour */
+    .green  { color: #f00; }          /* hex colour */
+    .blue   { color: rgb(0, 0, 0); } /* rgb() */
+    .purple { color: hsl(137, 90%, 50%); }/* hsl() */
+    .muted  { color: grey; }          /* muted/grey */
+
+    /* color on a heading — children inherit it */
+    h2 { color: #10B981; }
+  </style>
+  <title>topic 8</title>
+</head>
+<body>
+  <h2>All these paragraphs use color:</h2>
+  <p class="red">Named colour: blue</p>
+  <p class="green">Hex colour: #f00</p>
+  <p class="blue">RGB colour: rgb(0, 0, 0)</p>
+  <p class="purple">HSL colour: hsl(137, 90%, 50%)</p>
+  <p class="muted">Muted grey text</p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>topic-20</title>
+    <style>
+        .visible{
+            border: 1px solid darkmagenta;
+        }
+        .hidden{
+            visibility: hidden;
+            border: 1px solid black;
+            margin: 10px;
+        }
+        .btn{
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="visible">This is visible container</div>
+    <div class="none">You cannot see this box</div>
+    <div class="visible">This is another visible but no gap with 1st one despite being 3rd</div>
+    <div class="hidden" id="hidden">I was hidden</div>
+    <div class="visible">There is a hidden box above</div>
+    <button class="btn" onclick="document.getElementById('hidden').style.visibility = document.getElementById('hidden').style.visibility === 'hidden' ? 'visible' : 'hidden'">
+        Click me to see
+    </button>
+    <script>
+        
+    </script>
+</body>
+</html>

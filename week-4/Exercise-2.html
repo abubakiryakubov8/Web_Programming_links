@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 4, exercise-2</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #e9e4d8;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  .card {
+    --card: #fbf8f1;
+    --ink: #1d2a24;
+    --muted: #5d6b63;
+    --line: #d3ccba;
+    --accent: #2f6b4f;
+    --accent-ink: #fbf8f1;
+
+    width: 100%;
+    max-width: 340px;
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 26px 24px;
+    transition: background .25s, color .25s, border-color .25s;
+  }
+
+  /* Dark mode: only the variables change */
+  .card.dark {
+    --card: #18211c;
+    --ink: #e8efe9;
+    --muted: #96a89c;
+    --line: #2b3a31;
+    --accent: #8fd1ab;
+    --accent-ink: #10201a;
+  }
+
+  .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  h1 { margin: 0 0 2px; font-size: 26px; font-weight: 600; }
+  .role { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+  .bio { margin: 0 0 22px; font-size: 16px; line-height: 1.6; }
+
+  .stats {
+    display: flex;
+    gap: 24px;
+    padding: 14px 0;
+    margin-bottom: 20px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stats div { font-size: 13px; color: var(--muted); }
+  .stats strong { display: block; font-size: 20px; color: var(--ink); font-weight: 600; }
+
+  button {
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 9px 18px;
+    transition: background .2s, color .2s;
+  }
+  button:hover { background: var(--accent); color: var(--accent-ink); }
+  button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<article class="card" id="card">
+  <div class="avatar" aria-hidden="true">A</div>
+  <h1>Abdulazizbek</h1>
+  <p class="role">Gachon University, South Korea</p>
+  <p class="bio">I make websites and programs for people to gain experience.</p>
+  <div class="stats">
+    <div><strong>10+</strong>sites built</div>
+    <div><strong>2</strong>with its own dom</div>
+  </div>
+  <button id="toggle" type="button">Switch to dark mode</button>
+</article>
+
+<script>
+  // Select the card and the toggle button
+  const card = document.querySelector('#card');
+  const toggleBtn = document.querySelector('#toggle');
+
+  // Add a click listener to the button
+  toggleBtn.addEventListener('click', () => {
+    // Toggle the dark class on the card
+    card.classList.toggle('dark');
+
+    // Update the button text based on the current mode
+    toggleBtn.textContent = card.classList.contains('dark')
+      ? 'Switch to light mode'
+      : 'Switch to dark mode';
+  });
+</script>
+
+</body>
+</html>
